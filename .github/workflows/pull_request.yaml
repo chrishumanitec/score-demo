@@ -56,7 +56,7 @@ jobs:
             echo "no score file found, cannot deploy"
             exit 1
           fi
-            sed -i -E "s/^(\\s+image:)\\s+.*\$/\\1 'registry.humanitec.io\\/${{ vars.HUMANITEC_ORG }}\\/${GITHUB_REPOSITORY##*/}:${GITHUB_SHA}'/" score.yaml
+          sed -i -E "s/^(\\s+image:)\\s+.*\$/\\1 'registry.humanitec.io\\/${{ vars.HUMANITEC_ORG }}\\/${GITHUB_REPOSITORY##*/}:${GITHUB_SHA}'/" score.yaml
           score-humanitec delta \
               --retry \
               --deploy \

@@ -28,18 +28,16 @@ jobs:
           mv score-humanitec /usr/local/bin
       - name: Run Score
         run: |
-          if [ -f score.yaml ]
-          then
-            sed -i -E "s/^(\\s+image:)\\s+.*\$/\\1 'registry.humanitec.io\\/${{ vars.HUMANITEC_ORG }}\\/${GITHUB_REPOSITORY##*/}:${GITHUB_SHA}'/" score.yaml
-            score-humanitec delta \
+          if ! [ -f score.yaml ]
+          then 
+            echo "no score file found, cannot deploy"
+            exit 1
+          fi
+          sed -i -E "s/^(\\s+image:)\\s+.*\$/\\1 'registry.humanitec.io\\/${{ vars.HUMANITEC_ORG }}\\/${GITHUB_REPOSITORY##*/}:${GITHUB_SHA}'/" score.yaml
+          score-humanitec delta \
               --retry \
               --deploy \
               --token ${{ secrets.HUMANITEC_TOKEN }} \
               --org ${{ vars.HUMANITEC_ORG }} \
               --app ${{ vars.HUMANITEC_APP }} \
-              --env ${{ env.ENVIRONMENT }} \
-              | tee score_output.json
-          else
-            echo "no score file found, cannot deploy"
-            exit 1
-          fi
+              --env ${{ env.ENVIRONMENT_ID }} > score_output.json
