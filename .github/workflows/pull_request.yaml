@@ -64,7 +64,7 @@ jobs:
               --org ${{ vars.HUMANITEC_ORG }} \
               --app ${{ vars.HUMANITEC_APP }} \
               --env ${{ env.ENVIRONMENT_ID }} \
-              | tee score_output.json
+              | tee score_output.json || exit 1
       - name: Wait for deployment
         run: |
           sleep 1
