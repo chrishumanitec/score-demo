@@ -51,10 +51,13 @@ jobs:
           mv score-humanitec /usr/local/bin
       - name: Run Score
         run: |
-          if [ -f score.yaml ]
+          if ! [ -f score.yaml ]
           then 
+            echo "no score file found, cannot deploy"
+            exit 1
+          fi
             sed -i -E "s/^(\\s+image:)\\s+.*\$/\\1 'registry.humanitec.io\\/${{ vars.HUMANITEC_ORG }}\\/${GITHUB_REPOSITORY##*/}:${GITHUB_SHA}'/" score.yaml
-            score-humanitec delta \
+          score-humanitec delta \
               --retry \
               --deploy \
               --token ${{ secrets.HUMANITEC_TOKEN }} \
@@ -62,10 +65,6 @@ jobs:
               --app ${{ vars.HUMANITEC_APP }} \
               --env ${{ env.ENVIRONMENT_ID }} \
               | tee score_output.json
-          else
-            echo "no score file found, cannot deploy"
-            exit 1
-          fi
       - name: Wait for deployment
         run: |
           sleep 1
