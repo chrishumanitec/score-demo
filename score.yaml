@@ -4,6 +4,8 @@ metadata:
 containers:
   jotd:
     image: .
+  variable:
+    MESSAGE: Hello World!
 service:
   ports:
     www:
