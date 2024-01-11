@@ -57,14 +57,14 @@ jobs:
             exit 1
           fi
             sed -i -E "s/^(\\s+image:)\\s+.*\$/\\1 'registry.humanitec.io\\/${{ vars.HUMANITEC_ORG }}\\/${GITHUB_REPOSITORY##*/}:${GITHUB_SHA}'/" score.yaml
-          score-humanitec delta \
+          (set +o pipefail && score-humanitec delta \
               --retry \
               --deploy \
               --token ${{ secrets.HUMANITEC_TOKEN }} \
               --org ${{ vars.HUMANITEC_ORG }} \
               --app ${{ vars.HUMANITEC_APP }} \
               --env ${{ env.ENVIRONMENT_ID }} \
-              | tee score_output.json || exit 1
+              | tee score_output.json )
       - name: Wait for deployment
         run: |
           sleep 1
