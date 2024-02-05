@@ -16,6 +16,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Build and Push to Humanitec
+        id: build-push
         uses: humanitec/build-push-to-humanitec@v1
         with:
           humanitec-token: ${{ secrets.HUMANITEC_TOKEN }}
@@ -34,7 +35,7 @@ jobs:
             exit 1
           fi
           score-humanitec delta \
-              --image "registry.humanitec.io/${{ vars.HUMANITEC_ORG }}/${GITHUB_REPOSITORY##*/}:${GITHUB_SHA}" \
+              --image "${{ steps.build-push.outputs.image }}" \
               --retry \
               --deploy \
               --token ${{ secrets.HUMANITEC_TOKEN }} \
