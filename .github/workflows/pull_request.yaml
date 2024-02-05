@@ -94,7 +94,7 @@ jobs:
       - name: Build Comment Message
         run: |
           ENV_URL="$(jq -r ".metadata.url" score_output.json)"
-          DOMAINS="$(humctl get active-resource "${{ env.ENVIRONMENT_ID }}" \
+          DOMAINS="$(humctl get active-resources \
             --token ${{ secrets.HUMANITEC_TOKEN }} \
             --org ${{ vars.HUMANITEC_ORG }} \
             --app ${{ vars.HUMANITEC_APP }} \
