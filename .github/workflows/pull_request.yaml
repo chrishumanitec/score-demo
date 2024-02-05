@@ -79,7 +79,7 @@ jobs:
             --token ${{ secrets.HUMANITEC_TOKEN }} \
             --org ${{ vars.HUMANITEC_ORG }} \
             --app ${{ vars.HUMANITEC_APP }} \
-            -o json | jq -r ".status.last_deploy.status")"
+            -o json | jq -r ".status.last_deploy.status.status")"
             
             INPROGRESS="in progress"
 
