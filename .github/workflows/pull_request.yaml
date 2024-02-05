@@ -99,7 +99,7 @@ jobs:
             --org ${{ vars.HUMANITEC_ORG }} \
             --app ${{ vars.HUMANITEC_APP }} \
             --env ${{ env.ENVIRONMENT_ID }} \
-            -o json | jq -r '. | map(.entity | select(.type == "dns")) | map((.res_id | split(".") | .[1]) + ": [" + .resource.host + "](https://" + .resource.host + ")") | join("\n")')"
+            -o json | jq -r '[.[] | select(.metadata.type == "dns") | (.metadata.res_id | split(".") | .[1]) + ": [" + .status.resource.host + "](https://" + .status.resource.host+ ")"] | join("\n")')"
           
           echo "## Deployment Complete for ${{ env.ENVIRONMENT_NAME }}! :tada:" >> pr_message.txt
           echo "" >> pr_message.txt
